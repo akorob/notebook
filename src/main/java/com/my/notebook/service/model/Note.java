@@ -17,7 +17,7 @@ public class Note {
     @NotBlank(message = "Id is mandatory")
     private String id;
 
-    @Size(max= 10)
+    @Size(max= 256)
     private String title;
 
     @NotBlank(message = "Text is mandatory")
