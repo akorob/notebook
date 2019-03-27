@@ -1,0 +1,90 @@
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+    <script src="app.js"></script>
+    <style>
+    .line-through {
+        text-decoration: line-through;
+    }
+    </style>
+</head>
+
+<body ng-app="Notebook">
+<div ng-controller="AppController">
+
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Notebook</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <form class="form">
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control"
+                               ng-model="noteToAdd.title"
+                               maxlength="256"
+                               placeholder="Title ...">
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="5"
+                               maxlength="256"
+                               class="form-control"
+                               ng-model="noteToAdd.text"
+                               placeholder="Text ..."
+                        ></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <input type="text"
+                                   class="form-control"
+                                   ng-model="filterStr"
+                                   maxlength="20"
+                                   placeholder="Filter ...">
+                        </div>
+                        <div class="col-xs-2">
+                            <button type="submit" class="btn btn-default pull-left" ng-click="search(filterStr)">Search</button>
+                        </div>
+                        <div class="col-xs-3">
+                            <button type="submit" class="btn btn-primary pull-right" ng-click="add(noteToAdd)">Add note</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr ng-repeat="note in notes">
+                            <td>{{note.title || note.text}}</td>
+                            <td>
+                                <button type="button" class="btn btn-default btn-s pull-right" ng-click="remove(note)">
+                                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination pull-right" style="margin: 0px">
+                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
