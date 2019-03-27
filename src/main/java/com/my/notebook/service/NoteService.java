@@ -29,7 +29,6 @@ public class NoteService {
         if (dbNote == null) {
             throw new ObjectNotFoundException(id, Note.NAME);
         }
-
         return new NoteDto(dbNote.getId(), dbNote.getTitle(), dbNote.getText());
     }
 
@@ -39,22 +38,17 @@ public class NoteService {
         if (count == 0) {
             return new SearchResponse();
         }
-
         List<Note> notes = databaseService.search(searchRequest);
 
         SearchResponse response = new SearchResponse();
         response.setItems(notes.stream().map(t -> new NoteDto(t.getId(), t.getTitle(), t.getText())).collect(Collectors.toList()));
         response.setCount(count);
-
         return response;
     }
 
     @Transactional
     public void add (CreateRequest createRequest) {
-        if (createRequest == null || createRequest.getText() == null ||  createRequest.getText().length() == 0) {
-            throw new IllegalArgumentException();
-        }
-
+        validate(createRequest);
         Note note = new Note();
         note.setId(UUID.randomUUID().toString());
         note.setTitle(createRequest.getTitle());
@@ -67,7 +61,7 @@ public class NoteService {
     @Transactional
     public void delete (DeleteRequest deleteRequest) {
         if (deleteRequest == null || deleteRequest.getId() == null || deleteRequest.getId().length() == 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Id to delete not specified");
         }
 
         Note note = databaseService.findById(deleteRequest.getId());
@@ -76,6 +70,24 @@ public class NoteService {
         }
 
         databaseService.delete(note);
+    }
+
+    private void validate (CreateRequest createRequest) {
+        if (createRequest == null) {
+            throw new IllegalArgumentException("CreateRequest is empty");
+        }
+
+        if (createRequest.getText() == null || createRequest.getText().length() == 0) {
+            throw new IllegalArgumentException("Note text is empty");
+        }
+
+        if (createRequest.getTitle() != null && createRequest.getTitle().length() > 256) {
+            throw new IllegalArgumentException("Note title should be not more than 256 symbols");
+        }
+
+        if (createRequest.getText() != null && createRequest.getText().length() > 1024) {
+            throw new IllegalArgumentException("Note text should be not more than 1024 symbols");
+        }
     }
 
 }

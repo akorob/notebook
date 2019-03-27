@@ -72,9 +72,9 @@ public class DatabaseService {
         List<Predicate> wherePredicates = new ArrayList<>();
         if (searchRequest.getSearchString() != null && searchRequest.getSearchString().length() != 0) {
             String srchStr = "%"+ searchRequest.getSearchString().toUpperCase() + "%";
-            Predicate namePredicate = cb.like(cb.upper(root.get("name")), srchStr);
+            Predicate textPredicate = cb.like(cb.upper(root.get("text")), srchStr);
             Predicate titlePredicate = cb.like(cb.upper(root.get("title")), srchStr);
-            wherePredicates.add(cb.or(namePredicate, titlePredicate));
+            wherePredicates.add(cb.or(textPredicate, titlePredicate));
         }
 
         return wherePredicates;

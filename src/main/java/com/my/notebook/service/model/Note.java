@@ -5,19 +5,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
 public class Note {
-    public static final String NAME = "Note entity";
+    public static final String NAME = "Note";
 
     @Id
+    @NotBlank(message = "Id is mandatory")
     private String id;
 
+    @Size(max= 10)
     private String title;
 
+    @NotBlank(message = "Text is mandatory")
+    @Size(max= 1024)
     private String text;
 
+    @NotNull(message = "Create date is mandatory")
     private Date createDate;
 
     public String getId() {
