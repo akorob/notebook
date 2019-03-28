@@ -1,6 +1,6 @@
 angular.module('Notebook', [])
 
-    /* @ngInject */
+/* @ngInject */
     .controller('AppController', function ($scope, $http, $timeout) {
 
         var NOTES_URL = 'http://localhost:8080/note';
@@ -14,12 +14,32 @@ angular.module('Notebook', [])
         $scope.remove = remove;
         $scope.clear = clear;
 
+        $scope.pagination = {
+            prev: function () {
+                $scope.pagination.page--;
+                search();
+            },
+            next: function () {
+                $scope.pagination.page++;
+                search();
+            },
+            prevAvailable: function () {
+                return $scope.pagination.page > 1;
+            },
+            nextAvailable: function () {
+                return $scope.pagination.total > $scope.pagination.itemsPerPage * $scope.pagination.page;
+            },
+            page: 1,
+            itemsPerPage: 5,
+            total: 0
+        };
+
         search();
 
         function clear() {
             $scope.errorMessage = "";
             $scope.filterStr = "";
-            search();
+            clearPagingAndSearch();
         }
 
         function remove(note) {
@@ -39,13 +59,24 @@ angular.module('Notebook', [])
         }
 
         function search(searchStr) {
-            return $http.post(NOTES_URL + '/search', {searchString: searchStr})
+            return $http.post(NOTES_URL + '/search', {
+                searchString: searchStr,
+                page: $scope.pagination.page,
+                itemsPerPage: $scope.pagination.itemsPerPage
+            })
                 .then(function (response) {
                     $scope.notes = response.data.items;
+                    $scope.pagination.total = response.data.count;
                 }, errorCallback);
         }
 
-        function add(noteToAdd){
+        function clearPagingAndSearch() {
+            $scope.pagination.page = 1;
+            $scope.pagination.total = 0;
+            search();
+        }
+
+        function add(noteToAdd) {
             return $http.post(NOTES_URL + '/add', noteToAdd)
                 .then(function (value) {
                     $scope.noteToAdd = {};

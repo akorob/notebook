@@ -36,7 +36,7 @@
                                placeholder="Title ...">
                     </div>
                     <div class="form-group">
-                        <textarea rows="5"
+                        <textarea rows="5" style="resize: none"
                                maxlength="256"
                                class="form-control"
                                ng-model="noteToAdd.text"
@@ -77,13 +77,13 @@
                         </tr>
                     </tbody>
                 </table>
-                <nav aria-label="Page navigation example">
+                <nav ng-if="pagination.total > pagination.itemsPerPage">
                     <ul class="pagination pull-right" style="margin: 0px">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        <li ng-if="pagination.prevAvailable()" class="page-item">
+                            <a class="page-link" href="#" ng-click="pagination.prev()">Previous</a>
+                        </li>
+                        <li class="page-item"><a class="page-link">{{pagination.page}}</a></li>
+                        <li ng-if="pagination.nextAvailable()" class="page-item"><a class="page-link" href="#" ng-click="pagination.next()">Next</a></li>
                     </ul>
                 </nav>
             </div>
