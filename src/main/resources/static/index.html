@@ -22,6 +22,9 @@
     </nav>
 
     <div class="container">
+        <div ng-if="errorMessage" class="alert alert-danger">
+            <strong>Error!</strong> {{errorMessage}}.
+        </div>
         <div class="row">
             <div class="col-xs-6">
                 <form class="form">
@@ -41,17 +44,18 @@
                         ></textarea>
                     </div>
                     <div class="row">
-                        <div class="col-xs-7">
+                        <div class="col-xs-6">
                             <input type="text"
                                    class="form-control"
                                    ng-model="filterStr"
                                    maxlength="20"
                                    placeholder="Filter ...">
                         </div>
-                        <div class="col-xs-2">
+                        <div class="col-xs-4">
                             <button type="submit" class="btn btn-default pull-left" ng-click="search(filterStr)">Search</button>
+                            <button type="submit" class="btn btn-default pull-left" ng-click="clear()">Clear</button>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-xs-2">
                             <button type="submit" class="btn btn-primary pull-right" ng-click="add(noteToAdd)">Add note</button>
                         </div>
                     </div>
